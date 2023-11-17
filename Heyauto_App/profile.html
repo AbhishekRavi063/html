@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <style>
+        /* CSS to center the Profile form */
+        #profileMain {
+            margin: 0 auto; /* Setting left and right margin to auto centers the element */
+            width: 50%; /* Adjust width as needed */
+        }
+    </style>
+</head>
+<body>
+    <div id="profileMain">
+        <h1 style="text-align: center;">User Profile</h1>
+        <p>Welcome, <span id="userName"></span>!</p>
+        <p>Email: <span id="userEmail"></span></p>
+        
+        <button class="btn btn-primary" onclick="logout()">Logout</button>
+
+        <h2>Change Password</h2>
+        <form action="/login" method="post">
+            <div class="mb-3">
+                <label for="email" class="form-label">Email address</label>
+                <input type="email" class="form-control" id="email" name="email" required>
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" class="form-control" id="password" name="password" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Login</button>
+        </form>
+    </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        const currentUser = {
+            name: '<%= user.name %>', // This value should be populated from your server-side code
+            email: '<%= user.email %>', // This value should be populated from your server-side code
+        };
+
+        document.getElementById('userName').innerText = currentUser.name;
+        document.getElementById('userEmail').innerText = currentUser.email;
+
+        function logout() {
+            // Implement logout logic here
+            window.location.href = '/logout';
+        }
+
+        function changePassword(event) {
+            event.preventDefault();
+            const formData = new FormData(event.target);
+            const currentPassword = formData.get('currentPassword');
+            const newPassword = formData.get('newPassword');
+
+            // Implement change password logic here
+            axios.post('/changepassword', { currentPassword, newPassword })
+                .then(response => {
+                    alert(response.data);
+                })
+                .catch(error => {
+                    console.error(error);
+                    alert('Error changing password');
+                });
+        }
+    </script>
+</body>
+</html>

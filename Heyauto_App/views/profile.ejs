@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <style>
+        /* CSS to center the Profile form */
+        #profileMain {
+            margin: 0 auto; /* Setting left and right margin to auto centers the element */
+            width: 50%; /* Adjust width as needed */
+        }
+    </style>
+</head>
+<body>
+    <div id="profileMain">
+    <h1>Profile</h1>
+    <p>Welcome, <%= user.name %>!</p>
+    <p>Email: <%= user.email %></p>
+    
+    <button class="btn btn-primary" onclick="logout()">Logout</button>
+    
+    <h2>Change Password</h2>
+    <form action="/profile" method="post">
+        <div class="mb-3">
+            <label for="Current Password" class="form-label">Current Password</label>
+            <input type="eCurrent Password" class="form-control" id="Current Password" name="Current Password" required>
+        </div>
+        <div class="mb-3">
+            <label for="New Password" class="form-label">New Password</label>
+            <input type="New Password" class="form-control" id="New Password" name="New Password" required>
+        </div>
+        <button type="submit" class="btn btn-primary">change Password</button>
+    </form>
+</div>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        function logout() {
+            window.location.href = '/logout';
+        }
+
+        function changePassword(event) {
+            event.preventDefault();
+            const formData = new FormData(event.target);
+            const currentPassword = formData.get('currentPassword');
+            const newPassword = formData.get('newPassword');
+
+            axios.post('/changepassword', { currentPassword, newPassword })
+                .then(response => {
+                    alert(response.data);
+                })
+                .catch(error => {
+                    console.error(error);
+                    alert('Error changing password');
+                });
+        }
+    </script>
+</body>
+</html>
